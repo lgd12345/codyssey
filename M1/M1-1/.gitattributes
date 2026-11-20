@@ -1,0 +1,2 @@
+# Preserve the exact response bytes used by source_manifest.json SHA-256 checks.
+data/source/* -text

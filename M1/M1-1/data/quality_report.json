@@ -1,0 +1,31 @@
+{
+  "requested_start": "2023-01-01",
+  "requested_end": "2025-12-31",
+  "raw_rows": 347,
+  "condition_matched_rows": 347,
+  "raw_unique_dates": 347,
+  "raw_missing_or_nonfinite_prices": 0,
+  "raw_nonpositive_prices": 0,
+  "raw_duplicate_date_rows": 0,
+  "excluded": {
+    "invalid_date": 0,
+    "outside_requested_range": 0,
+    "missing_or_nonfinite_price": 0,
+    "nonpositive_price": 0,
+    "exact_duplicate": 0
+  },
+  "clean_rows": 347,
+  "valid_unique_dates": 347,
+  "outlier_threshold_pct": 20.0,
+  "outlier_candidate_count": 6,
+  "max_absolute_change_pct": 233.17142857142858,
+  "max_gap_days": 196,
+  "long_gap_threshold_days": 30,
+  "long_gap_count": 3,
+  "calendar_coverage": {
+    "price_observed": 347,
+    "price_missing": 0,
+    "no_record_in_response": 749
+  },
+  "requested_calendar_days": 1096
+}

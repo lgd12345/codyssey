@@ -1,0 +1,483 @@
+{
+  "conditions": {
+    "item": "딸기",
+    "region": "서울",
+    "variety": "설향",
+    "grade": "상품",
+    "unit": "원/500g",
+    "aggregation": "KAMIS 제공 평균(전통시장·유통업체)"
+  },
+  "audit": {
+    "requested_start": "2023-01-01",
+    "requested_end": "2025-12-31",
+    "raw_rows": 347,
+    "condition_matched_rows": 347,
+    "raw_unique_dates": 347,
+    "raw_missing_or_nonfinite_prices": 0,
+    "raw_nonpositive_prices": 0,
+    "raw_duplicate_date_rows": 0,
+    "excluded": {
+      "invalid_date": 0,
+      "outside_requested_range": 0,
+      "missing_or_nonfinite_price": 0,
+      "nonpositive_price": 0,
+      "exact_duplicate": 0
+    },
+    "clean_rows": 347,
+    "valid_unique_dates": 347,
+    "outlier_threshold_pct": 20.0,
+    "outlier_candidate_count": 6,
+    "max_absolute_change_pct": 233.17142857142858,
+    "max_gap_days": 196,
+    "long_gap_threshold_days": 30,
+    "long_gap_count": 3,
+    "calendar_coverage": {
+      "price_observed": 347,
+      "price_missing": 0,
+      "no_record_in_response": 749
+    },
+    "requested_calendar_days": 1096
+  },
+  "first": {
+    "date": "2023-01-02",
+    "price": 11357.0
+  },
+  "last": {
+    "date": "2025-12-31",
+    "price": 14161.0,
+    "change_pct": 1.592653705430802,
+    "gap_days": 1,
+    "previous_date": "2025-12-30",
+    "previous_price": 13939.0
+  },
+  "minimum": {
+    "date": "2023-05-25",
+    "price": 3500.0,
+    "change_pct": -29.292929292929294,
+    "gap_days": 1,
+    "previous_date": "2023-05-24",
+    "previous_price": 4950.0
+  },
+  "maximum": {
+    "date": "2024-11-29",
+    "price": 15594.0,
+    "change_pct": 149.10543130990413,
+    "gap_days": 189,
+    "previous_date": "2024-05-24",
+    "previous_price": 6260.0
+  },
+  "overall_change_pct": 24.689618737342613,
+  "mean_price": 8337.0,
+  "largest_increase": {
+    "date": "2023-12-07",
+    "price": 11661.0,
+    "change_pct": 233.17142857142858,
+    "gap_days": 196,
+    "previous_date": "2023-05-25",
+    "previous_price": 3500.0
+  },
+  "largest_decrease": {
+    "date": "2023-05-25",
+    "price": 3500.0,
+    "change_pct": -29.292929292929294,
+    "gap_days": 1,
+    "previous_date": "2023-05-24",
+    "previous_price": 4950.0
+  },
+  "monthly": [
+    {
+      "month": "2023-01",
+      "count": 20,
+      "mean": 9465.7,
+      "median": 9379.0,
+      "min": 8114.0,
+      "max": 11357.0
+    },
+    {
+      "month": "2023-02",
+      "count": 20,
+      "mean": 8144.65,
+      "median": 7953.5,
+      "min": 7421.0,
+      "max": 9236.0
+    },
+    {
+      "month": "2023-03",
+      "count": 22,
+      "mean": 6797.772727272727,
+      "median": 6721.5,
+      "min": 5914.0,
+      "max": 7314.0
+    },
+    {
+      "month": "2023-04",
+      "count": 20,
+      "mean": 5830.7,
+      "median": 5795.0,
+      "min": 5150.0,
+      "max": 7021.0
+    },
+    {
+      "month": "2023-05",
+      "count": 17,
+      "mean": 5163.941176470588,
+      "median": 4967.0,
+      "min": 3500.0,
+      "max": 5850.0
+    },
+    {
+      "month": "2023-06",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2023-07",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2023-08",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2023-09",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2023-10",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2023-11",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2023-12",
+      "count": 16,
+      "mean": 10927.0,
+      "median": 11213.5,
+      "min": 9294.0,
+      "max": 12561.0
+    },
+    {
+      "month": "2024-01",
+      "count": 22,
+      "mean": 10429.09090909091,
+      "median": 10381.0,
+      "min": 8233.0,
+      "max": 12561.0
+    },
+    {
+      "month": "2024-02",
+      "count": 19,
+      "mean": 9647.105263157895,
+      "median": 8811.0,
+      "min": 7811.0,
+      "max": 11906.0
+    },
+    {
+      "month": "2024-03",
+      "count": 20,
+      "mean": 6969.7,
+      "median": 6663.5,
+      "min": 5842.0,
+      "max": 8549.0
+    },
+    {
+      "month": "2024-04",
+      "count": 21,
+      "mean": 5978.190476190476,
+      "median": 6077.0,
+      "min": 4933.0,
+      "max": 6533.0
+    },
+    {
+      "month": "2024-05",
+      "count": 15,
+      "mean": 6108.866666666667,
+      "median": 6105.0,
+      "min": 5882.0,
+      "max": 6338.0
+    },
+    {
+      "month": "2024-06",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2024-07",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2024-08",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2024-09",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2024-10",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2024-11",
+      "count": 1,
+      "mean": 15594.0,
+      "median": 15594.0,
+      "min": 15594.0,
+      "max": 15594.0
+    },
+    {
+      "month": "2024-12",
+      "count": 16,
+      "mean": 13405.5,
+      "median": 13333.0,
+      "min": 12328.0,
+      "max": 14417.0
+    },
+    {
+      "month": "2025-01",
+      "count": 18,
+      "mean": 11762.666666666666,
+      "median": 11847.0,
+      "min": 10017.0,
+      "max": 12639.0
+    },
+    {
+      "month": "2025-02",
+      "count": 20,
+      "mean": 9010.7,
+      "median": 9236.0,
+      "min": 7253.0,
+      "max": 10228.0
+    },
+    {
+      "month": "2025-03",
+      "count": 20,
+      "mean": 6629.15,
+      "median": 6642.5,
+      "min": 5959.0,
+      "max": 7232.0
+    },
+    {
+      "month": "2025-04",
+      "count": 22,
+      "mean": 5503.136363636364,
+      "median": 5685.5,
+      "min": 4690.0,
+      "max": 6374.0
+    },
+    {
+      "month": "2025-05",
+      "count": 17,
+      "mean": 5237.764705882353,
+      "median": 5262.0,
+      "min": 4855.0,
+      "max": 5797.0
+    },
+    {
+      "month": "2025-06",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2025-07",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2025-08",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2025-09",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2025-10",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2025-11",
+      "count": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    {
+      "month": "2025-12",
+      "count": 21,
+      "mean": 13234.57142857143,
+      "median": 13450.0,
+      "min": 11444.0,
+      "max": 14838.0
+    }
+  ],
+  "annual": [
+    {
+      "year": 2023,
+      "count": 115,
+      "mean": 7660.791304347826,
+      "median": 7271.0,
+      "min": 3500.0,
+      "max": 12561.0
+    },
+    {
+      "year": 2024,
+      "count": 114,
+      "mean": 8766.543859649122,
+      "median": 8094.5,
+      "min": 4933.0,
+      "max": 15594.0
+    },
+    {
+      "year": 2025,
+      "count": 118,
+      "mean": 8581.033898305084,
+      "median": 7242.5,
+      "min": 4690.0,
+      "max": 14838.0
+    }
+  ],
+  "counterexample_last_20": {
+    "first": {
+      "date": "2025-12-02",
+      "price": 14838.0,
+      "change_pct": 0.1620089104900746,
+      "gap_days": 1,
+      "previous_date": "2025-12-01",
+      "previous_price": 14814.0
+    },
+    "last": {
+      "date": "2025-12-31",
+      "price": 14161.0,
+      "change_pct": 1.592653705430802,
+      "gap_days": 1,
+      "previous_date": "2025-12-30",
+      "previous_price": 13939.0
+    },
+    "change_pct": -4.562609516107297
+  },
+  "prediction": {
+    "method": "rolling one-step naive",
+    "training_observations": 327,
+    "validation_observations": 20,
+    "validation_start": "2025-12-02",
+    "validation_end": "2025-12-31",
+    "mae": 461.95
+  },
+  "independent_checks": [
+    {
+      "date": "2023-01-10",
+      "window_prices": [
+        11357.0,
+        11357.0,
+        11357.0,
+        9957.0,
+        10064.0,
+        9714.0,
+        9429.0
+      ],
+      "previous_price": 9714.0,
+      "price": 9429.0,
+      "moving_average_7_decimal": "10462.14285714285714285714286",
+      "change_pct_decimal": "-2.933909820877084620135886350",
+      "passed": true
+    },
+    {
+      "date": "2024-03-27",
+      "window_prices": [
+        6430.0,
+        6219.0,
+        5989.0,
+        6124.0,
+        6406.0,
+        6444.0,
+        6728.0
+      ],
+      "previous_price": 6444.0,
+      "price": 6728.0,
+      "moving_average_7_decimal": "6334.285714285714285714285714",
+      "change_pct_decimal": "4.407200496585971446306641800",
+      "passed": true
+    },
+    {
+      "date": "2025-12-31",
+      "window_prices": [
+        12222.0,
+        12183.0,
+        12911.0,
+        13450.0,
+        14017.0,
+        13939.0,
+        14161.0
+      ],
+      "previous_price": 13939.0,
+      "price": 14161.0,
+      "moving_average_7_decimal": "13269.0",
+      "change_pct_decimal": "1.592653705430805653203242700",
+      "passed": true
+    }
+  ]
+}
