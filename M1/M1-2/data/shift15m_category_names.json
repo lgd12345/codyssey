@@ -1,0 +1,13 @@
+{
+  "source": "https://github.com/hanxjing/GP-BPR#meta-data",
+  "method": "Matched distinct SHIFT15M sample item_id values to identical IQON3000 itemId values and checked the product category breadcrumb.",
+  "categories": {
+    "10": {"name": "아우터", "breadcrumb": ["ジャケット", "コート"], "verified_items": 8, "example_item_id": "38394099"},
+    "11": {"name": "상의", "breadcrumb": ["トップス"], "verified_items": 9, "example_item_id": "20604887"},
+    "12": {"name": "하의", "breadcrumb": ["パンツ", "スカート"], "verified_items": 8, "example_item_id": "36862509"},
+    "13": {"name": "신발", "breadcrumb": ["靴"], "verified_items": 16, "example_item_id": "41521504"},
+    "14": {"name": "가방", "breadcrumb": ["バッグ"], "verified_items": 13, "example_item_id": "39554669"},
+    "15": {"name": "액세서리", "breadcrumb": ["アクセサリー"], "verified_items": 31, "example_item_id": "40739303"},
+    "16": {"name": "모자", "breadcrumb": ["帽子"], "verified_items": 8, "example_item_id": "5474877"}
+  }
+}

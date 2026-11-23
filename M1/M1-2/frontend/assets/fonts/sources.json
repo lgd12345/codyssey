@@ -1,0 +1,26 @@
+[
+  {
+    "file": "PretendardVariable.woff2",
+    "source": "https://raw.githubusercontent.com/orioncactus/pretendard/v1.3.9/packages/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
+    "sha256": "9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4",
+    "bytes": 2057688
+  },
+  {
+    "file": "Pretendard-LICENSE.txt",
+    "source": "https://raw.githubusercontent.com/orioncactus/pretendard/v1.3.9/LICENSE",
+    "sha256": "d31ddd9f2bed32fd7e302a205cf2380ba0de6529152d239ef99cfb6f261bfc04",
+    "bytes": 4418
+  },
+  {
+    "file": "CormorantGaramond.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/cormorantgaramond/CormorantGaramond%5Bwght%5D.ttf",
+    "sha256": "b20b7d9626dd956b2c5e558692ad328b1f19e3275e2782db4fa07670d83f35e0",
+    "bytes": 1195560
+  },
+  {
+    "file": "CormorantGaramond-OFL.txt",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/cormorantgaramond/OFL.txt",
+    "sha256": "60700d351cac4650c51f3f9db318d2a420f8b45052dba2715eb5fec41f0f6956",
+    "bytes": 4387
+  }
+]

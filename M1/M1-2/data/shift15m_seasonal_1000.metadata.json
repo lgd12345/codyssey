@@ -1,0 +1,83 @@
+{
+  "dataset": "SHIFT15M",
+  "creator": "ZOZO Research",
+  "repository_url": "https://github.com/st-tech/zozo-shift15m",
+  "source_url": "https://research.zozo.com/data_release/shift15m/label/iqon_outfits_with_tags.json",
+  "source": {
+    "total_bytes": 2783503523,
+    "etag": "\"6599a51b802d4fdaeadefb7de6d2c8b5-163\"",
+    "last_modified": "Sat, 06 Aug 2022 02:14:50 GMT",
+    "bytes_read": 2783503523,
+    "sha256": "cea13a009c9af6b23ee3530435714734856a76b5e57d0f04546b71ded36121bc",
+    "complete": true
+  },
+  "retrieved_at_utc": "2026-11-21T00:46:31.754847+00:00",
+  "license": {
+    "name": "CC BY-NC 4.0",
+    "url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "local_copy": "SHIFT15M_LICENSE.txt"
+  },
+  "fields": {
+    "id": "Original set_id; not a user wardrobe item ID",
+    "date": "Original outfit publication date, not an actual wearing or capture date",
+    "value": "Count of items in this outfit, including accessories",
+    "memo": "Derived summary; category IDs are preserved without guessing category names",
+    "items": "Original item and category IDs; integer price_jpy is the source item price",
+    "likes": "Cumulative likes at source collection; not daily changes or current popularity",
+    "tags": "Original Japanese tags, possibly empty"
+  },
+  "selection": {
+    "method": "monthly quotas; round-robin across dates; newest numeric ID within each date",
+    "latest_source_date": "2020-04-06",
+    "window_start": "2019-04-01",
+    "window_end": "2020-03-31",
+    "selected_count": 1000,
+    "selected_date_min": "2019-04-01",
+    "selected_date_max": "2020-03-31",
+    "unique_dates": 366,
+    "max_per_date": 3,
+    "monthly_counts": {
+      "2019-04": 84,
+      "2019-05": 83,
+      "2019-06": 83,
+      "2019-07": 84,
+      "2019-08": 83,
+      "2019-09": 83,
+      "2019-10": 84,
+      "2019-11": 83,
+      "2019-12": 83,
+      "2020-01": 84,
+      "2020-02": 83,
+      "2020-03": 83
+    },
+    "season_counts": {
+      "spring": 250,
+      "winter": 250,
+      "autumn": 250,
+      "summer": 250
+    },
+    "counts": {
+      "records_scanned": 2555147,
+      "outside_window": 2502637
+    }
+  },
+  "changes": [
+    "Selected a month-balanced sample instead of newest-only records",
+    "Retained real publication dates",
+    "Removed user and favorite-brand fields",
+    "Normalized and validated using the original collector"
+  ],
+  "limitations": [
+    "Historical posts, not current fashion trends",
+    "Seasons are Northern Hemisphere calendar-month groups, not verified garment suitability",
+    "Balanced sampling does not estimate natural posting frequency or market popularity",
+    "No raw photos or user identities included"
+  ],
+  "output": {
+    "file": "shift15m_seasonal_1000.json",
+    "bytes": 824750,
+    "sha256": "82e06c7c1e08d6fc19d3d2dc1d25da1613675f8dba2daf670ff13b88254ad075"
+  },
+  "collector_sha256": "d40ca2d1aee3b5dd44bf096067ce409185f341152434246233f27033cd908a84",
+  "python_version": "3.12.14"
+}
