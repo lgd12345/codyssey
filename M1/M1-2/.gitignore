@@ -13,4 +13,3 @@ firebase-adminsdk*.json
 .local/
 .vercel/
 .vercel-static/
-/backend/assets/flower-waiting.mp3

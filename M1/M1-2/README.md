@@ -1,10 +1,14 @@
 # My Closet AI
 
-사진으로 등록한 내 옷장과 개인 취향, 외출 날짜의 계절, 과거 코디 통계를 참고하는 AI 코디 웹 앱입니다. 브라우저 세션 또는 로컬 시연 계정 단위로 개인 설정·옷장·대화를 보관합니다.
+사진으로 등록한 내 옷장과 개인 취향, 외출 날짜의 계절, 과거 코디 통계를 참고하는 AI 코디 웹 앱입니다. 배포 환경에서는 회원별로 개인 설정·옷장·대화를 Firestore에 보관합니다.
 
 ## 현재 상태
 
-로컬 구현 및 검증 단계입니다. 실제 Codyssey 연결, 데이터 요약 기반 답변, Firestore 데이터 저장·조회·수정·삭제와 AI 대화 저장·불러오기를 확인했습니다. 현재 Firestore 저장 모드입니다. **공개 배포는 확인 안 됨**입니다. 기존 로컬 SQLite 기록은 자동 이전하지 않았으며 `.local/`에 보존되어 있습니다. 화면 상단에 저장 모드를 표시합니다.
+공개 환경에서 회원 로그인, Firestore 데이터 추가·조회와 요약 반영, AI 답변의 요약 건수 인용, 대화 저장 및 다시 불러오기를 확인했습니다. 기존 로컬 SQLite 자료는 `.local/`에 보존합니다.
+
+- [프런트엔드 · Vercel](https://angle-closet.vercel.app/)
+- [백엔드 API · Render](https://angle-closet-api.onrender.com/api/status)
+- [Swagger UI](https://angle-closet-api.onrender.com/docs)
 
 **현재 AI 연결:** Morrono의 New API 게이트웨이(`https://new-api.morrono.com/v1`), 모델 `gpt-6.1-terra`입니다. 게이트웨이의 모델 메타데이터와 공식 문서에서 OpenAI Chat Completions 호환 형식을 확인했습니다. OpenAI 본사 API 직접 연결을 뜻하지 않습니다.
 
@@ -145,13 +149,13 @@ FIREBASE_SERVICE_ACCOUNT_JSON=secrets/style-test-firebase-service-account.json
 
 ## 보안과 배포 전 확인
 
-과제 배포에서는 Render의 Python Web Service와 Vercel의 정적 프런트엔드 모두 Git 저장소의 `M1/M1-2`를 루트로 사용합니다.
+Render의 Python Web Service는 Git 저장소의 `M1/M1-2`를 루트로 사용합니다. Vercel에는 같은 위치에서 버전 관리하는 프런트와 배포 설정만 추려 CLI로 배포했습니다.
 
 - Render 빌드는 `pip install -r requirements.txt`, 시작은 `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`, 상태 확인 경로는 `/health`입니다.
 - Render에 `APP_ENV=production`, `STORAGE_BACKEND=firestore`, `CLOSET_LOGIN_REQUIRED=true`, Render 호스트의 `ALLOWED_HOSTS`, 실제 Vercel HTTPS 주소의 `ALLOWED_ORIGINS`를 설정합니다. Firebase 서비스 계정과 AI 키는 Render 서버에만 설정합니다.
 - Firestore 시연 계정은 Firestore 환경을 설정한 뒤 프로젝트 루트에서 `python -m scripts.create_firestore_member`로 생성합니다. 로컬 SQLite 계정과 자료는 별도로 보관합니다.
 - Vercel의 `API_BASE_URL`은 경로 없이 Render의 HTTPS 주소만 설정합니다. 브라우저에 보이는 출처에서 API를 호출하도록 프록시를 구성해 회원 세션 쿠키를 이용합니다.
-- 배경음악은 배포 권한이 확인된 파일을 서버에 별도로 제공할 때 `BACKGROUND_MUSIC_PATH`로 설정합니다. 로컬 MP3는 Git에서 제외합니다.
+- 배경음악 기본 파일은 `backend/assets/flower-waiting.mp3`입니다. 앱에서는 로그인한 회원에게만 음원을 제공하며, GitHub에서는 저장소 공개 범위에 따라 원본 파일에 접근할 수 있습니다.
 
 - `.env`, `.local/`, `secrets/`, `.venv`는 Git에서 제외합니다. 프론트 정적 파일은 `frontend/`에서만 제공해 비밀 파일·DB를 내려받을 수 없도록 합니다.
 - AI 키는 서버에서 승인된 HTTPS 제공자 주소로만 전송합니다. 키·AI 제공자 원문 예외는 응답·로그에 출력하지 않습니다. 인증 없는 데이터 수집기는 키를 읽지 않습니다.
@@ -160,7 +164,7 @@ FIREBASE_SERVICE_ACCOUNT_JSON=secrets/style-test-firebase-service-account.json
 - AI 반환 ID는 현재 소유 옷장에서 확인하고 외부 호출 이후에도 재검사합니다. HTML로 사용자 입력을 삽입하지 않으며 CSP·출처·Host·요청 빈도를 검사합니다.
 - CSV 텍스트의 수식 시작 문자를 방어합니다. 비밀키·원본 이미지가 포함되지 않은 데이터만 내보냅니다.
 - 로컬 서버는 `127.0.0.1`에만 바인딩합니다. 방화벽·백신·보안 정책을 낮추거나 라우터 포트를 개방할 필요가 없습니다.
-- 공개 배포는 이후 단계입니다. Render 백엔드·Vercel 프론트 주소가 확정되면 `APP_ENV=production`, `STORAGE_BACKEND=firestore`, 실제 `ALLOWED_HOSTS`·`ALLOWED_ORIGINS`와 HTTPS 프록시/동일 출처 구성을 검증해야 합니다. 브라우저의 익명 쿠키가 두 배포 출처 사이에서 실제로 유지되는지도 확인해야 합니다.
+- Vercel과 Render는 외부 배포 주소가 다릅니다. 브라우저는 동일 출처인 Vercel의 `/api`로 요청하고 Vercel이 Render에 전달합니다. Render에서는 등록한 Vercel 출처만 변경 요청에 허용하고, HTTPS 회원 쿠키로 세션을 확인합니다.
 - 운영에서는 HTTPS와 영속 Firestore를 사용하고 관리자 자격증명 최소 권한, 사용자/세션 보존·삭제 정책, 이미지 사용 비용, 제공자 자체 사용량 한도, 다중 인스턴스의 IP 제한, 백업·모니터링을 확인해야 합니다. 현재 로컬 검증만으로 공개 서비스의 보안을 보장하지 않습니다.
 
 ## 검증
@@ -172,7 +176,7 @@ FIREBASE_SERVICE_ACCOUNT_JSON=secrets/style-test-firebase-service-account.json
 
 자동 테스트는 외부 AI를 모킹하여 요금 없이 데이터 경계·접근 분리·사진 거부·부정 추천·대화 저장을 검증합니다. 실제 AI 연결/답변 검증과는 구분합니다. 화면 증빙은 `reports/`에 보관합니다.
 
-미확인 항목은 공개 Render/Vercel 배포, 다양한 의류 사진에 대한 실제 자동 판별·추천의 전체 검증입니다. 명세서의 문서 대응과 실제 기능 검증 완료는 다릅니다.
+공개 환경에서 여러 종류의 의류에 대한 자동 판별·착용 이미지 품질은 확인 안 됨입니다.
 
 ## 코디북과 일상복 검증
 
