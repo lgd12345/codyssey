@@ -167,7 +167,14 @@ document.querySelector('.brand').addEventListener('click', event => {
   });
 });
 document.querySelectorAll('[data-close]').forEach(element => element.addEventListener('click', () => $(element.dataset.close).close()));
-document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('click', event => {if (event.target === dialog) {const bounds = dialog.getBoundingClientRect(); if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();}}));
+document.querySelectorAll('dialog:not(#login-dialog)').forEach(dialog => {
+  dialog.addEventListener('click', event => {
+    if (event.target !== dialog) return;
+    const bounds = dialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right ||
+        event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
+  });
+});
 
 function renderWardrobe() {
   const grid = $('wardrobe-grid'); grid.replaceChildren();
