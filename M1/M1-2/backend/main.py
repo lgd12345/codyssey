@@ -16,7 +16,7 @@ from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from . import auth, config, services, garment_images
-from .schemas import Chat, DataPoint, Garment, Login, Profile, SaveOutfit, WearReview
+from .schemas import ALL_SEASONS, SEASONS, Chat, DataPoint, GarmentEdit, Login, Profile, SaveOutfit, WearReview, parse_garment_seasons
 from .storage import store
 
 CONVERSATION_SWEEP_SECONDS = 60 * 60
@@ -176,7 +176,8 @@ def visible_garment(row):
     private_fields = {'image_b64', 'original_b64', 'thumbnail_b64', 'wear_b64', 'base_mask_b64',
                       'source_sha256', 'conversion_key', 'has_base_mask', 'wear_fit'}
     return {**{key: value for key, value in row.items() if key not in private_fields},
-            'image_ready': ready, 'has_base_mask': ready and bool(row.get('has_base_mask'))}
+            'image_ready': ready, 'has_base_mask': ready and bool(row.get('has_base_mask')),
+            'season_choices': parse_garment_seasons(row.get('season') or '')}
 
 
 def image_record(row,owner):
@@ -233,7 +234,7 @@ def logout(request: Request):
 @app.get('/api/status')
 def status(request: Request):
     avatar = garment_images.AVATAR
-    return {'storage': store.mode, 'ai_configured': bool(config.AI_KEY), 'image_analysis_enabled': config.IMAGE_ANALYSIS_ENABLED, 'garment_conversion_ready':garment_images.is_ready(), 'garment_review_ready':garment_images.review_is_ready(), 'login_required': config.LOGIN_REQUIRED, 'authenticated': getattr(request.state, 'authenticated', False), 'background_music_available': config.BACKGROUND_MUSIC_PATH.is_file(), 'date': services.today().isoformat(), 'conversation_retention_days': config.CONVERSATION_RETENTION_DAYS, 'source': 'SHIFT15M · CC BY-NC 4.0', 'source_period': services.SOURCE_PERIOD, 'avatar': {key: avatar[key] for key in ('image', 'canvas', 'foreground', 'hands_foreground', 'crop_boxes') if key in avatar}}
+    return {'storage': store.mode, 'ai_configured': bool(config.AI_KEY), 'image_analysis_enabled': config.IMAGE_ANALYSIS_ENABLED, 'garment_conversion_ready':garment_images.is_ready(), 'garment_review_ready':garment_images.review_is_ready(), 'login_required': config.LOGIN_REQUIRED, 'authenticated': getattr(request.state, 'authenticated', False), 'background_music_available': config.BACKGROUND_MUSIC_PATH.is_file(), 'garment_seasons': {'individual': SEASONS, 'all': ALL_SEASONS}, 'date': services.today().isoformat(), 'conversation_retention_days': config.CONVERSATION_RETENTION_DAYS, 'source': 'SHIFT15M · CC BY-NC 4.0', 'source_period': services.SOURCE_PERIOD, 'avatar': {key: avatar[key] for key in ('image', 'canvas', 'foreground', 'hands_foreground', 'crop_boxes') if key in avatar}}
 
 
 @app.get('/api/profile')
@@ -458,7 +459,7 @@ def convert_garment(key: str, request: Request):
 
 
 @app.put('/api/wardrobe/{key}')
-def update_garment(key: str, body: Garment, request: Request):
+def update_garment(key: str, body: GarmentEdit, request: Request):
     row = owned(request, 'wardrobe', key)
     if row['category'] != body.category:
         row.pop('wear_fit', None)

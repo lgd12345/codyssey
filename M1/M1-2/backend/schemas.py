@@ -1,6 +1,21 @@
 from datetime import date as Date
+import re
 from typing import Literal
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+
+SEASONS = ('봄', '여름', '가을', '겨울')
+ALL_SEASONS = '사계절'
+ALL_SEASON_LABELS = (ALL_SEASONS, '연중', '올시즌')
+
+
+def parse_garment_seasons(value):
+    labels = set(filter(None, re.split(r'[\s,，.·ㆍ・/;|\-]+', value.strip())))
+    if len(labels) == 1 and labels.intersection(ALL_SEASON_LABELS):
+        return [ALL_SEASONS]
+    if labels and labels.issubset(SEASONS):
+        return [season for season in SEASONS if season in labels]
+    return []
 
 
 class Input(BaseModel):
@@ -33,8 +48,18 @@ class Garment(Input):
     name: str = Field(min_length=1, max_length=80)
     category: Literal['상의', '하의', '아우터', '원피스', '신발', '가방', '액세서리']
     color: str = Field(default='#7b6554', pattern=r'^#[0-9a-fA-F]{6}$')
-    season: str = Field(default='사계절', max_length=30)
+    season: str = Field(default=ALL_SEASONS, max_length=30)
     memo: str = Field(default='', max_length=300)
+
+
+class GarmentEdit(Garment):
+    @field_validator('season')
+    @classmethod
+    def validate_season(cls, value):
+        seasons = parse_garment_seasons(value)
+        if not seasons:
+            raise ValueError('착용 계절을 정확히 선택해 주세요.')
+        return ' · '.join(seasons)
 
 
 class Chat(Input):

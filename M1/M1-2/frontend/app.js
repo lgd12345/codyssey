@@ -610,8 +610,62 @@ $('wear-review-save').addEventListener('click', async () => {
     drawWearReview();
   }
 });
-function editGarment(row) {state.editGarment = row.id; ['name','category','color','season','memo'].forEach(key => {$('garment-' + key).value = row[key];}); $('garment-preview').src = '/api/wardrobe/' + encodeURIComponent(row.id) + '/image'; $('garment-dialog').showModal();}
-$('garment-form').addEventListener('submit', async event => {event.preventDefault(); const submit = event.submitter; submit.disabled = true; try {const body = {}; ['name','category','color','season','memo'].forEach(key => {body[key] = $('garment-' + key).value;}); await api('wardrobe/' + state.editGarment, {method:'PUT',body:JSON.stringify(body)}); await refreshWardrobe(); $('garment-dialog').close(); toast('의류 정보를 저장했습니다.');} catch(error) {toast(error.message);} finally {submit.disabled = false;}});
+const garmentSeasons = $('garment-seasons');
+const garmentSeasonFeedback = $('garment-season-feedback');
+function showGarmentSeasonFeedback(message = '') {
+  garmentSeasonFeedback.textContent = message;
+  garmentSeasonFeedback.hidden = !message;
+}
+function setGarmentSeasonOptions({individual, all}) {
+  garmentSeasons.replaceChildren(...[...individual, all].map(season => {
+    const label = node('label', undefined, 'occasion-option');
+    const option = node('input');
+    option.type = 'checkbox';
+    option.value = season;
+    option.addEventListener('change', () => {
+      if (option.checked) {
+        for (const other of garmentSeasons.querySelectorAll('input')) {
+          if (other !== option && (season === all || other.value === all)) other.checked = false;
+        }
+      }
+      showGarmentSeasonFeedback();
+    });
+    label.append(option, node('span', season));
+    return label;
+  }));
+}
+function editGarment(row) {
+  state.editGarment = row.id;
+  for (const key of ['name', 'category', 'color', 'memo']) $('garment-' + key).value = row[key];
+  const selections = row.season_choices ?? [];
+  for (const option of garmentSeasons.querySelectorAll('input')) option.checked = selections.includes(option.value);
+  showGarmentSeasonFeedback(selections.length ? '' : '기존 계절 정보를 확인할 수 없어요. 착용 계절을 다시 골라 주세요.');
+  $('garment-preview').src = '/api/wardrobe/' + encodeURIComponent(row.id) + '/image';
+  $('garment-dialog').showModal();
+}
+$('garment-form').addEventListener('submit', async event => {
+  event.preventDefault();
+  const seasons = Array.from(garmentSeasons.querySelectorAll('input:checked'), option => option.value);
+  if (!seasons.length) {
+    showGarmentSeasonFeedback('착용 계절을 하나 이상 골라 주세요.');
+    garmentSeasons.querySelector('input')?.focus();
+    return;
+  }
+  const submit = event.submitter;
+  submit.disabled = true;
+  try {
+    const body = {season: seasons.join(' · ')};
+    for (const key of ['name', 'category', 'color', 'memo']) body[key] = $('garment-' + key).value;
+    await api('wardrobe/' + state.editGarment, {method: 'PUT', body: JSON.stringify(body)});
+    await refreshWardrobe();
+    $('garment-dialog').close();
+    toast('의류 정보를 저장했습니다.');
+  } catch (error) {
+    toast(error.message);
+  } finally {
+    submit.disabled = false;
+  }
+});
 $('garment-delete').addEventListener('click', async () => {if (!await confirmAction('이 의류를 옷장에서 삭제할까요?')) return; const submit = $('garment-delete'); submit.disabled = true; try {await api('wardrobe/' + state.editGarment, {method:'DELETE'}); state.selected = state.selected.filter(id => id !== state.editGarment); await refreshWardrobe(); $('garment-dialog').close(); toast('옷장에서 삭제했습니다. 추천 후보에서도 제외됩니다.');} catch(error) {toast(error.message);} finally {submit.disabled = false;}});
 
 $('profile-open').addEventListener('click', () => {if (!state.profile) return toast('서버 연결을 먼저 확인해 주세요.'); ['name','heat','cold','theme','closet_theme'].forEach(key => {$('profile-' + key).value = state.profile[key];}); document.querySelectorAll('#style-options input').forEach(input => {input.checked = state.profile.styles.includes(input.value);}); $('profile-dialog').showModal();});
@@ -1069,6 +1123,7 @@ async function initialize() {
       return;
     }
     applyAvatar(status.avatar);
+    setGarmentSeasonOptions(status.garment_seasons);
     state.conversionReady = status.garment_conversion_ready;
     state.uploadReady = Boolean(status.image_analysis_enabled && status.garment_review_ready);
     $('upload-submit').disabled = !state.uploadReady;
