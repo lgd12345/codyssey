@@ -54,6 +54,13 @@ main { max-width:1920px; margin:auto; padding:0; }
 .eyebrow { font-family:Atelier Sans,sans-serif; font-size:.6875rem; line-height:1.6; font-weight:500; letter-spacing:.18em; }
 #view-studio>.page-heading { display:none; }
 .studio-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.12fr) minmax(0,1fr); gap:0; padding:0 2%; position:relative; align-items:stretch; isolation:isolate; background:linear-gradient(var(--room-wash),var(--room-wash)),var(--closet-background,url('/assets/assets/atelier-room.png')) center/cover no-repeat; }
+@media (min-width:1536px) {
+  .studio-grid {
+    /* All room backgrounds share the same 1536 × 1024 canvas. */
+    background-size:auto, min(100%, 1536px) auto;
+    background-color:var(--bg);
+  }
+}
 .studio-grid>.panel,.studio-grid>.avatar-panel { height:var(--studio-height); min-height:0; max-height:none; min-width:0; border:0; border-radius:0; box-shadow:none; }
 .studio-grid>.wardrobe-panel { display:flex; flex-direction:column; padding:0; overflow:hidden; background:none; }
 .wardrobe-panel:before,.wardrobe-grid:before,.arch:after,.arch-inner { display:none; }
