@@ -98,6 +98,12 @@ class SaveOutfit(Input):
     message_index: int | None = Field(default=None, ge=0, le=99)
 
 
+class EditOutfitInfo(Input):
+    title: str = Field(min_length=1, max_length=80)
+    date: Date
+    note: str = Field(max_length=2000)
+
+
 WearFit = Literal[
     'wrist_length_sleeves', 'short_sleeves', 'sleeveless',
     'dress_shoes', 'sneakers', 'closed_toe_heels', 'necktie',

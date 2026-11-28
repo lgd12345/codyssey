@@ -367,7 +367,13 @@ function renderOutfit() {
   if (savedOutfit || state.selected.length || (last && !last.outfit_ids?.length)) {
     const heading = node('div',undefined,'result-heading');
     const title = savedOutfit?.title || (isRecommendation ? '오늘의 추천 코디' : state.selected.length ? '직접 고른 코디' : '나의 스타일 노트');
-    heading.append(node('h3',title),node('span',savedOutfit ? '코디북' : state.selected.length ? '한 가지 조합' : 'AI 코디 제안')); area.append(heading);
+    heading.append(node('h3',title));
+    if (savedOutfit) {
+      heading.append(button('코디 정보 수정', () => openEditOutfit(savedOutfit), 'outline-button edit-outfit-trigger'));
+    } else {
+      heading.append(node('span', state.selected.length ? '한 가지 조합' : 'AI 코디 제안'));
+    }
+    area.append(heading);
     const note = savedOutfit ? savedOutfit.note : (isRecommendation || !state.selected.length) ? last?.content : null;
     const details = (savedOutfit
       ? [savedOutfit.outfit_season, savedOutfit.date]
@@ -983,6 +989,44 @@ $('save-outfit-form').addEventListener('submit',async event => {
     $('save-outfit-dialog').close(); toast('코디북에 저장했습니다.');
   } catch(error) {$('save-outfit-feedback').textContent = error.message;}
   finally {submit.disabled = false;}
+});
+const editOutfitDialog = $('edit-outfit-dialog');
+const editOutfitForm = $('edit-outfit-form');
+const editOutfitFeedback = $('edit-outfit-feedback');
+function openEditOutfit(row) {
+  if (editOutfitForm.querySelector('button[type=submit]').disabled) return;
+  editOutfitForm.dataset.outfitId = row.id;
+  for (const field of ['title', 'date', 'note']) editOutfitForm.elements.namedItem(field).value = row[field] ?? '';
+  editOutfitFeedback.textContent = '';
+  editOutfitDialog.showModal();
+}
+editOutfitForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  const id = editOutfitForm.dataset.outfitId;
+  const body = Object.fromEntries(new FormData(editOutfitForm));
+  const submit = event.submitter;
+  submit.disabled = true;
+  editOutfitFeedback.textContent = '';
+  try {
+    const fields = await api('outfits/' + encodeURIComponent(id), {method: 'PATCH', body: JSON.stringify(body)});
+    outfitRows = outfitRows.map(row => row.id === id ? {...row, ...fields} : row);
+    editOutfitDialog.close();
+    if (savedOutfit?.id === id) {
+      const date = $('outfit-date');
+      const previousDate = savedOutfit.date;
+      if (date.value === (previousDate >= date.min ? previousDate : date.min)) {
+        date.value = fields.date >= date.min ? fields.date : date.min;
+      }
+      savedOutfit = {...savedOutfit, ...fields};
+      state.messages[0].content = fields.note || '저장한 코디입니다.';
+      renderOutfit();
+    }
+    toast('코디 정보를 저장했습니다.');
+  } catch (error) {
+    editOutfitFeedback.textContent = error.message;
+  } finally {
+    submit.disabled = false;
+  }
 });
 async function loadOutfits() {
   outfitRows = await api('outfits');

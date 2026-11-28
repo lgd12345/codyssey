@@ -123,17 +123,21 @@ class Store:
                 self.db.commit()
 
     def attach_outfit_preview(self, owner, identifier, preview_key):
+        return self.update_outfit_fields(owner, identifier, {'preview_key': preview_key})
+
+    def update_outfit_fields(self, owner, identifier, fields):
         if self.mode == 'firestore':
             from google.api_core.exceptions import NotFound
 
             try:
-                self._collection('outfits', owner).document(identifier).update({'preview_key': preview_key}, timeout=10)
+                self._collection('outfits', owner).document(identifier).update(fields, timeout=10)
             except NotFound:
                 return False
             return True
         with self.lock, self.db:
-            updated = self.db.execute("""UPDATE documents SET payload=json_set(payload, '$.preview_key', ?)
-                WHERE collection='outfits' AND owner=? AND id=?""", (preview_key, owner, identifier))
+            updated = self.db.execute("""UPDATE documents SET payload=json_patch(payload, ?)
+                WHERE collection='outfits' AND owner=? AND id=?""",
+                (json.dumps(fields, ensure_ascii=False), owner, identifier))
             return updated.rowcount == 1
 
     def prune_conversations(self, cutoff):

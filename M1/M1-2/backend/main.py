@@ -16,7 +16,10 @@ from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from . import auth, config, services, garment_images
-from .schemas import ALL_SEASONS, SEASONS, Chat, DataPoint, GarmentEdit, Login, Profile, SaveOutfit, WearReview, parse_garment_seasons
+from .schemas import (
+    ALL_SEASONS, SEASONS, Chat, DataPoint, EditOutfitInfo, GarmentEdit, Login, Profile,
+    SaveOutfit, WearReview, parse_garment_seasons,
+)
 from .storage import store
 
 CONVERSATION_SWEEP_SECONDS = 60 * 60
@@ -753,8 +756,8 @@ def save_outfit(body: SaveOutfit, request: Request):
         if existing:
             if not existing.get('preview_key'):
                 image_key = cached_outfit_preview_key(request, existing)
-                if image_key:
-                    return store.put('outfits', owner, key, {**existing, 'preview_key': image_key})
+                if image_key and store.attach_outfit_preview(owner, key, image_key):
+                    return {**existing, 'preview_key': image_key}
             return existing
     else:
         if body.message_index is not None:
@@ -777,6 +780,14 @@ def save_outfit(body: SaveOutfit, request: Request):
     if image_key:
         row['preview_key'] = image_key
     return store.put('outfits', owner, key, row)
+
+
+@app.patch('/api/outfits/{key}')
+def edit_outfit_info(key: str, body: EditOutfitInfo, request: Request):
+    fields = {**body.model_dump(mode='json'), 'outfit_season': services.season_for_month(body.date.month)}
+    if not store.update_outfit_fields(request.state.owner, identifier(key), fields):
+        raise HTTPException(404, '저장한 코디를 찾을 수 없습니다.')
+    return fields
 
 
 @app.delete('/api/outfits/{key}', status_code=204)
