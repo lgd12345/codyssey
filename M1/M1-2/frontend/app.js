@@ -369,7 +369,13 @@ function renderOutfit() {
     const title = savedOutfit?.title || (isRecommendation ? '오늘의 추천 코디' : state.selected.length ? '직접 고른 코디' : '나의 스타일 노트');
     heading.append(node('h3',title));
     if (savedOutfit) {
-      heading.append(button('코디 정보 수정', () => openEditOutfit(savedOutfit), 'outline-button edit-outfit-trigger'));
+      const edit = button('', () => openEditOutfit(savedOutfit), 'icon-button edit-outfit-trigger');
+      edit.setAttribute('aria-label', '코디 정보 수정');
+      edit.title = '코디 정보 수정';
+      const pencil = svgNode('svg', {class:'ui-icon', viewBox:'0 0 24 24', 'aria-hidden':'true'});
+      pencil.append(svgNode('path', {d:'M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20zm10-13 3 3'}));
+      edit.append(pencil);
+      heading.append(edit);
     } else {
       heading.append(node('span', state.selected.length ? '한 가지 조합' : 'AI 코디 제안'));
     }
